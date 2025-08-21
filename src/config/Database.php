@@ -11,7 +11,7 @@ class Database {
         if (self::$instance === null) {
             // var_dump("se hizo la conexiòn");
             try {
-                self::$instance = new PDO("mysql:host=localhost;dbname=instagram_clone", "root", "");
+                self::$instance = new PDO("mysql:host=tramway.proxy.rlwy.net;port=32486;dbname=instagram_clone", "root", "NpGulXAsbGcguCrILrNmvZFuBJvseVbV");
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 die("Error DB: " . $e->getMessage());
@@ -19,4 +19,5 @@ class Database {
         }
         return self::$instance;
     }
+
 }
