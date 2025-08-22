@@ -7,11 +7,11 @@ use PDOException;
 class Database {
     private static $instance = null;
     public static function getConnection() {
-        $DB_HOST = $ENV['DB_HOST'];
-        $DB_USER = $ENV['DB_USER'];
-        $DB_PASSWORD = $ENV['DB_PASSWORD'];
-        $DB_NAME = $ENV['DB_NAME'];
-        $DB_PORT = $ENV['DB_PORT'];
+        $DB_HOST = $_ENV['DB_HOST'];
+        $DB_USER = $_ENV['DB_USER'];
+        $DB_PASSWORD = $_ENV['DB_PASSWORD'];
+        $DB_NAME = $_ENV['DB_NAME'];
+        $DB_PORT = $_ENV['DB_PORT'];
         // var_dump(self::$instance);
         if (self::$instance === null) {
             // var_dump("se hizo la conexiòn");
