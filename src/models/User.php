@@ -14,31 +14,24 @@ class User {
 
     public static function SaveLike($input) {
         $db = Database::getConnection();
-        //si es true o false restar o sumar
+
         if ($input['liked']) {
-            $query = "UPDATE `instagram_clone`.`likes`
-                    SET `cantidad_like` = `cantidad_like` + 1
-                    WHERE `id_like` = ?";    
+            $query = "INSERT INTO likes (id_usuario, id_usuario_like, id_publicacion) VALUES (?, ?, ?)";    
         }else{
-            $query = "UPDATE `instagram_clone`.`likes`
-                SET `cantidad_like` = `cantidad_like` - 1
-                WHERE `id_like` = ?";
-
+            $query = "DELETE FROM likes WHERE id_usuario = ? AND id_usuario_like = ? AND id_publicacion = ?";
         }
-
         $result = $db->prepare($query);
-        return $result->execute([$input['id_publicacion']]);
+        return $result->execute([$input['id_usuario'],$input['id_usuario_like'],$input['id_publicacion']]);
     }
 
     public static function SaveUser($dataRegister) {
         $db = Database::getConnection();
         $query = "INSERT INTO usuarios (telefono_o_correo, contrasena, nombre_completo, usuario, fecha_nacimiento, id_tipo_usuario)
-          VALUES (?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?, ?)";
 
         $hashedPassword =password_hash($dataRegister['password'], PASSWORD_DEFAULT); 
         $result = $db->prepare($query);
-        // var_dump($hashedPassword);
-        // die;
+
         return $result->execute([$dataRegister['phone_email'],
             $hashedPassword,
             $dataRegister['fullName'],
@@ -89,6 +82,7 @@ class User {
                                     p.id_publicacion AS id, 
                                     u.usuario AS username,
                                     p.id_usuario,
+                                    lk.id_like,
                                     per.foto AS profilePic,
                                     p.media_url AS postImage, 
                                     p.descripcion AS caption, 
@@ -96,10 +90,12 @@ class User {
                                 FROM publicaciones p
                                 LEFT JOIN usuarios u ON u.id_usuario = p.id_usuario
                                 LEFT JOIN perfiles per ON per.id_usuario = p.id_usuario
+                                LEFT JOIN likes lk ON lk.id_usuario = p.id_usuario 
+								AND lk.id_publicacion = p.id_publicacion AND lk.id_usuario_like = ?
                                 WHERE p.id_usuario != ?
                                 ORDER BY p.fecha_publicacion DESC
                             ");
-        $stmt->execute([$userId]);
+        $stmt->execute([$userId, $userId]);
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
@@ -127,6 +123,7 @@ class User {
     public static function CreateUser() {
         $db = Database::getConnection();
     }
+
     public static function getUser($userId) {
         $db = Database::getConnection();
         $stmt = $db->prepare("
@@ -144,6 +141,7 @@ class User {
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
+
     public static function storiesByUser() {
         $db = Database::getConnection();
         $stmt = $db->prepare("
