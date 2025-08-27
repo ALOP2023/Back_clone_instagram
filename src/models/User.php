@@ -12,6 +12,24 @@ class User {
         return $result->fetch(\PDO::FETCH_ASSOC);
     }
 
+    public static function SaveLike($input) {
+        $db = Database::getConnection();
+        //si es true o false restar o sumar
+        if ($input['liked']) {
+            $query = "UPDATE `instagram_clone`.`likes`
+                    SET `cantidad_like` = `cantidad_like` + 1
+                    WHERE `id_like` = ?";    
+        }else{
+            $query = "UPDATE `instagram_clone`.`likes`
+                SET `cantidad_like` = `cantidad_like` - 1
+                WHERE `id_like` = ?";
+
+        }
+
+        $result = $db->prepare($query);
+        return $result->execute([$input['id_publicacion']]);
+    }
+
     public static function SaveUser($dataRegister) {
         $db = Database::getConnection();
         $query = "INSERT INTO usuarios (telefono_o_correo, contrasena, nombre_completo, usuario, fecha_nacimiento, id_tipo_usuario)
@@ -55,8 +73,8 @@ class User {
             SELECT
                 id_like,
                 id_usuario,
-                id_publicacion,
-                cantidad_like
+                id_usuario_like,
+                id_publicacion
             FROM likes
         ");
         $stmt->execute();
@@ -92,7 +110,7 @@ class User {
                                 SELECT 
                                     FLOOR(1 + (RAND() * 9)) as  comments,
                                     FLOOR(1 + (RAND() * 9)) as likes, 
-                                    id_publicacion, 
+                                    id_publicacion AS id, 
                                     id_usuario, 
                                     media_url, 
                                     descripcion, 
@@ -108,5 +126,37 @@ class User {
 
     public static function CreateUser() {
         $db = Database::getConnection();
+    }
+    public static function getUser($userId) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("
+                                SELECT
+                                    FALSE AS borderActive,
+                                    us.id_usuario_seguido AS id_user,
+                                    u.usuario AS username,
+                                    p.foto AS profilePic
+                                FROM usuarios_seguidos us
+                                LEFT JOIN usuarios u ON us.id_usuario_seguido = u.id_usuario 
+                                LEFT JOIN perfiles p ON u.id_usuario = p.id_usuario
+                                WHERE us.id_usuario = ?
+        ");
+        $stmt -> execute([$userId]);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+    public static function storiesByUser() {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("
+                                SELECT
+                                    FALSE AS vista,
+                                    h.id_historia AS id,
+                                    h.media_url AS url,
+                                    h.fecha_publicacion,
+                                    h.id_usuario AS id_user
+                                FROM historias h
+        ");
+        $stmt -> execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
     }
 }

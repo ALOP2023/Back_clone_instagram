@@ -4,45 +4,7 @@ namespace Src\Controllers;
 use Src\Models\User;
 
 class AuthController{
-    // public function login(){
-    //     $input = json_decode(file_get_contents("php://input"), true);
-    //     $result= User::SearchUser($input['username'],$input['username']);
-    //     $password = $input['password'];
-    //     $usernameOrEmail = $input['username'] ?? '';
-    //     $row = User::FindWithProfile($usernameOrEmail);
-
-    //     if ($result === false ) {
-    //         echo json_encode([
-    //             "status" => false,
-    //             "message" => "La contraseña no es correcta. Compruébala."
-    //         ]);
-    //         exit;
-    //     }
-    //     if (password_verify($password, $result["contrasena"])) {
-    //         echo json_encode([
-    //             "status" => true,
-    //             "message" => "Inicio de sesión exitoso"
-    //         ]);    
-    //     } else {
-    //         echo json_encode([
-    //             "status" => false,
-    //             "message" => "La contraseña no es correcta. Compruébala."
-    //         ]);
-    //         exit;
-    //     }
-    //     echo json_encode([
-    //         "status"  => true,
-    //         "message" => "Inicio de sesión exitoso",
-    //         "user"    => [
-    //             "id"             => (int)$row["id"],
-    //             "username"       => $row["username"],
-    //             "foto_perfil"    => $row["foto"] ?? null
-    //         ]
-    //     ]);
-    //     exit;
-
-    // }
-
+    
     public function login() {
         $input = json_decode(file_get_contents("php://input"), true);
         $usernameOrEmail = $input['username'] ?? '';
@@ -108,45 +70,7 @@ class AuthController{
                 "message" => "exitoso"
             ]);
             exit;
-        // var_dump($result);
-        // die;
-        // if (!$result){
-        //     if(is_numeric($input['phone_email'])){
-        //         if (strlen($input['phone_email']) < 10){
-        //             echo json_encode([
-        //                 "status" => false,
-        //                 "message" => "Parece que tu número de teléfono es incorrecto. Ingresa el número completo, incluido el código de país."
-        //             ]);
-        //             exit;
-        //         }
-        //     } else if(filter_var($input['phone_email'], FILTER_VALIDATE_EMAIL)){
-        //         echo json_encode([
-        //             "status" => true,
-        //             "message" => "Email válido."
-        //         ]);
-        //         exit;
-        //     } elseif (strlen($input['password']) < 6) {
-        //         echo json_encode([
-        //             "status" => false,
-        //             "message" => "Crea una contraseña que tenga al menos 6 caracteres."
-        //         ]);
-        //     } 
-        //     else {
-        //         echo json_encode([
-        //             "status" => false,
-        //             "message" => "Enter a valid email address."
-        //         ]);
-        //         exit;
-        //     }
-            
-        //     // $phone_email = $input['phone_email'];
-            
-        // } else{
-        //     echo json_encode([
-        //         "status" => false,
-        //         "message" => "Este nombre de usuario no está disponible. Prueba con otro."
-        //     ]);
-        // }
+        
     }
 
     public function getUserExist(){

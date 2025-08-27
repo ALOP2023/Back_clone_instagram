@@ -1,6 +1,7 @@
 <?php
+
 // Habilitar CORS
-header("Content-Type: application/json");
+header('Content-Type: application/json; charset=utf-8');
 header("Access-Control-Allow-Origin: *"); // Permite solicitudes desde cualquier dominio
 header("Access-Control-Allow-Methods: POST, OPTIONS"); // Métodos permitidos (POST y OPTIONS)
 header("Access-Control-Allow-Headers: Content-Type, Authorization"); // Cabeceras permitidas
@@ -12,8 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 include_once '../src/config/EnvLoader.php';
 require_once __DIR__ . '/../src/config/Database.php';
 require_once __DIR__ . '/../src/models/User.php';
-require_once __DIR__ . '/../src/controllers/AuthController.php';
-use Src\Controllers\AuthController;
+require_once __DIR__ . '/../src/controllers/StoriesController.php';
 
-$controller = new AuthController();
-$controller->login();
+use Src\Controllers\Stories\StoriesController;
+
+$controller = new StoriesController();
+$controller->getStoriesByUser();

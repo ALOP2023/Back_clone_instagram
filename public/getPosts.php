@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200); // Responde con un código de éxito
     exit();
 }
+include_once '../src/config/EnvLoader.php';
 require_once __DIR__ . '/../src/config/Database.php';
 require_once __DIR__ . '/../src/models/User.php';
 require_once __DIR__ . '/../src/controllers/PostController.php';
