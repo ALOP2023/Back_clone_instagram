@@ -157,4 +157,20 @@ class User {
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public static function obtenerEstadisticasUsuario($idUsuario) {
+        $db = Database::getConnection();
+        $sql = "
+            SELECT 
+                (SELECT COUNT(*) FROM publicaciones p WHERE p.id_usuario = ?) AS count_post,
+                (SELECT COUNT(*) FROM usuarios_seguidos us WHERE us.id_usuario = ?) AS count_following,
+                (SELECT COUNT(*) FROM usuarios_seguidos us WHERE us.id_usuario_seguido = ?) AS count_followers
+        ";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$idUsuario, $idUsuario, $idUsuario]);
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
 }

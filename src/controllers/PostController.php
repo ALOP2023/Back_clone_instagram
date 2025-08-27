@@ -57,26 +57,4 @@ class PostController {
     
 }
 
-// array(
-//     "123"=>[
-//         "32"=>[
-//             l.id_like
-//             l.id_usuario,
-//             l.id_publicacion,
-//             l.cantidad_like
-//         ],
-//         "33"=>[
-//             l.id_like
-//             l.id_usuario,
-//             l.id_publicacion,
-//             l.cantidad_like
-//         ],
-//         "34"=>[
-//             l.id_like
-//             l.id_usuario,
-//             l.id_publicacion,
-//             l.cantidad_like
-//         ],
-//     ]
-// )
 

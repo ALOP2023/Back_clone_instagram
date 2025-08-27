@@ -46,7 +46,6 @@ class AuthController{
         exit;
     }
 
-
     public function register(){
         $input = json_decode(file_get_contents("php://input"), true);
         $result= User::SearchUser($input["dataRegister"]['userName'],$input["dataRegister"]['phone_email']);
